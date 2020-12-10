@@ -1,16 +1,136 @@
 {{> head }}
 
    
-        {{> navbar}}
+       
 
-      <div class="jumbotron">
-        <h1 class="display-4">Hello, {{ capitalizar nombre}}</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-        <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        <p class="lead">
-          <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-        </p>
+      
+    <div class="navbar-minimize-fixed">
+      <button class="minimize-sidebar btn btn-link btn-just-icon">
+        <i class="tim-icons icon-align-center visible-on-sidebar-regular text-muted"></i>
+        <i class="tim-icons icon-bullet-list-67 visible-on-sidebar-mini text-muted"></i>
+      </button>
+    </div>
+    {{> sidebar}}
+     {{> navbar}}
+    
+
+      <div class="content">
+        <!-- Your content here -->
+
+        <!--Imagen tablero y textos Principales-->
+
+        <div align="center" class="box-header with-border">   
+          <img src="./assets/img/banortetablero.PNG" class="mx-auto d-block" alt="">
+        </div>
+        <div class="box-header with-border">
+          <div class="box-header with-border">
+          
+           
+   
+             
+           </div>
+          <h3 class=" text-center"><strong class="text-center" style="color: #F28E2B;">Total Keywords </strong> <br><br> <span> 23500 </span><br><br><strong style="color: #F28E2B;">  Keywords Promedio por Llamada </strong> <br><br> <span> 14500</span></h3>
+
+         
+        </div>
+
+        <!--END imagen tablero y textos pricipales-->
+        <!--GRAFICAS 1.1 a 1.2-->
+        <div class="conten">
+          <table style="width: 1300px; ">
+          <tr>
+            <td style="width: 50%;height: 300px;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> grupos}}
+            <!--</div>-->
+            </td>
+            <td style="width: 50%;height: 300px;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> modulos}}
+             <!--</div>-->
+            </td>
+           
+            
+          </tr>
+          
+        </table>
+        </div>
+        <!--END GRAFICAS 1.1 a 1.2-->
+
+
+        <!--GRAFICAS 2.1 a 2.3-->
+        <div class="conten">
+          <table style="width: 1300px; ">
+          <tr>
+            <td style="width: 33%;height: 400px;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> infaltable}}
+            <!--</div>-->
+            </td>
+            <td style="width: 33%;height: 400px;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> noPermitida}}
+             <!--</div>-->
+            </td>
+            <td style="width: 33%;height: 400px;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> recomendacion}}
+             <!--</div>-->
+            </td>
+            
+          </tr>
+          
+        </table>
+        </div>
+        <!--END GRAFICAS 2.1 a 2.3-->
+
+        <!--GRAFICAS 3.1 a 3.6-->
+
+        <div class="content">
+          <table style="width: 1300px;">
+          <tr>
+            <td style="width: 33%;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> saludo}}
+            <!--</div>-->
+            </td>
+            <td style="width: 33%;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> producto}}
+             <!--</div>-->
+            </td>
+            <td style="width: 33%;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> venta}}
+             <!--</div>-->
+            </td>
+            </tr>
+            <tr style="">
+            <td style="width: 33%;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> validacion}}
+             <!--</div>-->
+            </td>
+            <td style="width: 33%;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> cierre}}
+             <!--</div>-->
+            </td>
+            <td style="width: 33%;">
+              <!--<div class="chart-container" style=" height:400px; width:400px">-->
+               {{> despedida}}
+             <!--</div>-->
+            </td>
+            
+          </tr>
+          
+        </table>
+        </div>
+
+        <!--END GRAFICAS 3.1 a 3.6-->
+       
+        
       </div>
+      
 
       {{> footer}}

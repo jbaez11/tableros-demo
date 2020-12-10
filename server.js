@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const hbs = require('hbs');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.use(express.static(__dirname + '/public'));
 //express hbs
@@ -14,9 +14,10 @@ app.get('/', function (req, res) {
   //res.send('Hello World')
   
   res.render('home',{
-      nombre: 'jonathan',
-  
+      infaltable: 'Infaltable',
+      infaltables : [20,3,4,5,6,5]   
   });
+  
 })
 
 app.get('/about', function (req, res) {
