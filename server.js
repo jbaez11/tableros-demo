@@ -17,8 +17,35 @@ conexion.connect(function(err){
     console.log('conexion exitosa a  bd mysql');
   }
 });
-const datetime1 = '2020-11-24 00:00';
-const datetime2 = '2020-12-07 00:00';
+
+//Add zeros to time formats
+function addZero(x, n) {
+  while (x.toString().length < n) {
+    x = "0" + x;
+  }
+  return x;
+}
+
+function getDateTime() {
+  let d = new Date();
+
+  // Current date
+  let year = d.getFullYear();
+  let month = addZero(d.getMonth()+1, 2); 
+  let date = addZero(d.getDate(), 2);
+
+  // Curren time
+  var hour = addZero(d.getHours(), 2);
+  var minute = addZero(d.getMinutes(), 2);
+  var second = addZero(d.getSeconds(), 2);
+  //var mlsecs = addZero(d.getMilliseconds(), 3);
+
+  // yyyy-mm-dd HH:MM:SS:ssss format
+  return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+}
+console.log(`fechga ${getDateTime()}`);
+const datetime1 = '2020-12-01 00:00';
+const datetime2 = getDateTime();
 const grupos = new Object();
 const modulos = new Object();
 const infaltable = new Object();
@@ -386,6 +413,8 @@ conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacion
 
 })
 //END despedida 3.6
+
+
 conexion.end();
 
 const port = process.env.PORT || 3001;
@@ -405,7 +434,9 @@ app.get('/', function (req, res) {
    
   res.render('home',{
       
-      
+      sumGrupos:[grupos.infaltable+grupos.noPermitida+grupos.recomendacion],
+      gruposInfaltable:[grupos.infaltable],
+      modulosCierre:[modulos.cierre],
       grupos:[grupos.infaltable,grupos.noPermitida,grupos.recomendacion],
       modulos: [modulos.saludo,modulos.producto,modulos.venta,modulos.validacion,modulos.cierre,modulos.despedida],
       infaltable : [infaltable.saludo,infaltable.producto,infaltable.venta,infaltable.validacion,infaltable.cierre,infaltable.despedida],

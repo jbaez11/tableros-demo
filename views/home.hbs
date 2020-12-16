@@ -14,14 +14,38 @@
      {{> navbar}}
     
 
-      <div class="content"  >
+      <div class="content" style="background-color:#F5F6FA;"  >
         <!-- Your content here -->
 
         <!--Imagen tablero y textos Principales-->
 
-        <div align="center" class="box-header with-border">   
-          <img src="./assets/img/banortetablero.PNG" class="mx-auto d-block" alt="">
+        <div align="center" class="box-header with-border" style="margin-bottom:30px;">   
+          <img src="./public/assets/img/banorte.PNG" class="mx-auto d-block" alt="">
+          
         </div>
+        
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col lg-4">
+              <h3 class=" text-center"><strong class="text-center" style="color: #F28E2B;">Total Keywords </strong> <br> <span style="color: black;"> {{sumGrupos}} </span><br><br></h3>
+
+            </div>
+            <div class="col-lg-4">
+              <h4 class="text-center" style="color: black;">Rangos de fecha</h4>
+                <form class="text-center" action="" >
+                  <input type="date" value="2020-12-01" >
+                </form>
+              <br><br>
+            </div>
+            <div class="col lg-4">
+             <h3 class="text-center"><strong style="color: #F28E2B;">  Keywords Promedio por Llamada </strong> <br> <span style="color: black;"> 14500<br></span></h3>
+            </div>
+            
+          </div>
+          
+        </div>
+
+
         <div class="box-header with-border">
           <div class="box-header with-border">
           
@@ -29,107 +53,237 @@
    
              
            </div>
-          <h3 class=" text-center"><strong class="text-center" style="color: #F28E2B;">Total Keywords </strong> <br><br> <span> 23500 </span><br><br><strong style="color: #F28E2B;">  Keywords Promedio por Llamada </strong> <br><br> <span> 14500</span></h3>
-
-         
+          
+          
         </div>
 
         <!--END imagen tablero y textos pricipales-->
         <!--GRAFICAS 1.1 a 1.2-->
-        <div class="conten">
-          <h1 style="text-align: center;">Grupos Y Modulos</h1>
-          <table style="width: 1300px; ">
-          <tr>
-            <td style="width: 50%;height: 300px;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> grupos}}
-            <!--</div>-->
-            </td>
-            <td style="width: 50%;height: 300px;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> modulos}}
-             <!--</div>-->
-            </td>
-           
-            
-          </tr>
-          
-        </table>
+        <div class="row ">
+          <h1 style="color:#F28E2B;" class="text-center">Grupos y Modulos</h1>
+          <div class="col-sm-12 col-md-6 col-lg-6 ml-auto">
+            <div class="card card-chart card-chart-pie" style="background-color:white;">
+              <div class="card-header">
+                <h5 class="card-category">grupos</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="chart-area">
+                      {{>grupos}}
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <h4 class="card-title" style="color:black;"><i class="tim-icons  icon-trophy  " style="color: #ba54f5;" ></i> {{gruposInfaltable}} de Infaltable </h4>
+                    <p class="" style="color:black;">De un total de {{sumGrupos}} keywords</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-6 ml-auto">
+            <div class="card card-chart card-chart-pie" style="background-color:white;">
+              <div class="card-header">
+                <h5 class="card-category">Modulos</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="chart-area">
+                      {{>modulos}}
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="row">
+                      
+                        <h4 class="card-title" style="color:black;"><i class="tim-icons  icon-trophy " style="color:#FF7F00;"></i> {{modulosCierre}} de Cierre </h4>
+                        <p class="" style="color:black;">De un total de {{sumGrupos}} keywords</p>
+                      
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        
         <!--END GRAFICAS 1.1 a 1.2-->
 
 
         <!--GRAFICAS 2.1 a 2.3-->
-        <div class="conten">
-          <h1 style="text-align: center; line-height:100px">Modulos Por Grupo</h1>
-          <table style="width: 1300px;">
-          <tr>
-            <td style="width: 33%;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> infaltable}}
-            <!--</div>-->
-            </td>
-            <td style="width: 33%;;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> noPermitida}}
-             <!--</div>-->
-            </td>
-            <td style="width: 33%;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> recomendacion}}
-             <!--</div>-->
-            </td>
-            
-          </tr>
-          
-        </table>
+
+        <div class="row">
+          <h1 style="color:#FF9B00; margin-top:35px; margin-bottom:30px;" class="text-center">Modulos por Grupo <br> </h1>
+          <div class="col-sm-6 col-md-6 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">infaltable</h5>
+                
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>infaltable}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">No permitida</h5>
+                
+
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>noPermitida}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">Recomendación</h5>
+                
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>recomendacion}}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+
+
+
         <!--END GRAFICAS 2.1 a 2.3-->
 
         <!--GRAFICAS 3.1 a 3.6-->
-
-        <div class="content">
-          <h1 style="text-align: center; line-height:100px">Grupos Por Modulos</h1>
-          <table style="width: 1300px;">
-          <tr>
-            <td style="width: 33%;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> saludo}}
-            <!--</div>-->
-            </td>
-            <td style="width: 33%;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> producto}}
-             <!--</div>-->
-            </td>
-            <td style="width: 33%;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> venta}}
-             <!--</div>-->
-            </td>
-            </tr>
-            <tr style="">
-            <td style="width: 33%;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> validacion}}
-             <!--</div>-->
-            </td>
-            <td style="width: 33%;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> cierre}}
-             <!--</div>-->
-            </td>
-            <td style="width: 33%;">
-              <!--<div class="chart-container" style=" height:400px; width:400px">-->
-               {{> despedida}}
-             <!--</div>-->
-            </td>
-            
-          </tr>
-          
-        </table>
+        <div class="row">
+          <h1 style="color:#FF9B00; margin-top:35px; margin-bottom:30px;" class="text-center">Grupos Por Modulos</h1>
+          <div class="col-sm-6 col-md-6 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">Saludo</h5>
+                
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>saludo}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">Producto</h5>
+                
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>producto}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">Venta</h5>
+                
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>venta}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">Validación</h5>
+                
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>validacion}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">Cierre</h5>
+                
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>cierre}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-4 ml-auto">
+            <div class="card card-chart" style="background-color: white;">
+              <div class="card-header">
+                <h5 class="card-category">Despedida</h5>
+                
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  {{>despedida}}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!--
+        <div class="row d-flex justify-content-center">
+          <div class="col-xs-12 col-lg-12">
+            <div class="table-responsive-lg"> 
+          <h1 style="color:#FF9B00; margin-top:35px; margin-bottom:10px;" class="text-center">Grupos por Modulos</h1>
+          <div class="row">
+
+              <div class="col-lg-4 col-md-12">
+                  {{> saludo}}
+              </div>
+              <div class="col-lg-4 col-md-12">
+                  {{> producto}}
+              </div>
+		          <div class="col-lg-4 col-md-12">
+                  {{> venta}}
+              </div>
+		          <div class="col-lg-4 col-md-12">
+                  {{> validacion}}
+              </div>
+              <div class="col-lg-4 col-md-12">
+                  {{> cierre}}
+              </div>
+		          <div class="col-lg-4 col-md-12">
+                  {{> despedida}}
+              </div>
+          </div>
+          
+          
+        </div>
+          </div>
+        </div>-->
         <!--END GRAFICAS 3.1 a 3.6-->
        
         

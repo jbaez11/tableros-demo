@@ -1,6 +1,7 @@
 <!--Grafica Grupos 1.1-->
 
 <script>
+     
     new Chart(document.getElementById("doughnut-chart1"), {
     type: 'doughnut',
     data: {
@@ -10,35 +11,38 @@
       datasets: [
         {
           label: "Grupos",
+          pointRadius: 0,
+          pointHoverRadius: 0,
           
           backgroundColor: [
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)'
+                '#ba54f5',
+                'rgba(253,93,147,0.8)',
+                '#2380f7'
                 
             ],
-            borderColor: [
+            /*borderColor: [
                 'rgba(75, 192, 192, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)'
                
-            ],
+            ],*/
             borderWidth: 1,
           data: [{{grupos}}],
         }
       ]
     },
     options: {
+        cutoutPercentage: 60,
       title: {
-        display: true,
+        display: false,
         text: 'Grupos',
-        fontColor: '#FFFFFF'
+        fontColor: 'black'
         
       },
       legend: {
-            display: true,
+            display: false,
             labels: {
-                fontColor: '#FFFFFF'
+                fontColor: '#333'
             }
         }
     }
@@ -50,15 +54,23 @@
 
 <!--Grafica Modulos 1.2-->
 <script>
+    
     new Chart(document.getElementById("doughnut-chart"), {
     type: 'doughnut',
     data: {
-      labels: ["Saludo", "Producto", "Venta", "Validacion", "Cierre", "Despedida"],
+      labels: ["Saludo", "Producto", "Venta", "Validación", "Cierre", "Despedida"],
       datasets: [
         {
           label: "Modulos",
-          //backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          
           backgroundColor: [
+                '#E41A1C',
+                '#377EB8',
+                '#4DAF4A',
+          "#984EA3", "#FF7F00","#FFFF33"],
+          /*backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -73,7 +85,7 @@
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1,
           data: [{{modulos}}]
         }
@@ -81,14 +93,14 @@
     },
     options: {
       title: {
-        display: true,
+        display: false,
         text: 'Modulos',
-        fontColor: '#FFFFFF'
+        fontColor: 'black'
       },
       legend: {
-            display: true,
+            display: false,
             labels: {
-                fontColor: '#FFFFFF'
+                fontColor: 'black'
             }
         }
     }
@@ -102,17 +114,75 @@
 
 <!--Grafica Infaltable 2.1-->
 <script>
+    gradientBarChartConfigurationWithGrid = {
+      
+      legend: {
+        display: false
+      },
     
-var ctx = document.getElementById('graficaInfaltable');
+    
+      responsive: true,
+      scales: {
+        yAxes: [{
+          gridLines: {
+            drawBorder: false,
+            color: 'rgba(253,93,147,0.1)',
+            zeroLineColor: "transparent",
+          },
+          ticks: {
+            //suggestedMin: 60,
+            //suggestedMax: 125,
+            //padding: 20,
+            fontColor: "#9e9e9e"
+          }
+        }],
+
+        xAxes: [{
+          gridLines: {
+            drawBorder: false,
+            color: 'rgba(253,93,147,0.1)',
+            zeroLineColor: "transparent",
+          },
+          ticks: {
+            //padding: 20,
+            fontColor: "#9e9e9e"
+          }
+        }]
+      }
+    };
+
+
+</script>
+<script>
+    
+var ctx = document.getElementById('graficaInfaltable').getContext("2d");
+var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, '#ba54f5');
+    //gradientStroke.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
+
+
+
 var myChart = new Chart(ctx, {
     type: 'bar',
+    responsive: true,
     data: {
-        labels: ['Saludo', 'Producto', 'Venta', 'Validacion', 'Cierre', 'Despedida'],
+        labels: ['Saludo', 'Producto', 'Venta', 'Validación', 'Cierre', 'Despedida'],
         datasets: [{
-            label: 'Infaltable',
+            label: "Infaltable",
+            fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#ba54f5',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          
+            
             //data: [12, 19, 3, 5, 2, 3],
             data: [{{infaltable}}],
-            backgroundColor: [
+            /*backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -128,27 +198,11 @@ var myChart = new Chart(ctx, {
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 1
+            borderWidth: 1*/
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                 
-                ticks: {
-                    beginAtZero: true,
-                     fontColor: '#FFFFFF'
-                }
-                
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-        }
-    }
+    options: gradientBarChartConfigurationWithGrid
+    
 });
 </script>
 
@@ -156,17 +210,34 @@ var myChart = new Chart(ctx, {
 
 <!--Grafica noPermitida 2.2-->
 <script>
+   
+
+
     
-var ctx2 = document.getElementById('noPermitida');
+var ctx2 = document.getElementById('noPermitida').getContext("2d");
+
+var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(253,93,147,0.8)');
+    gradientStroke.addColorStop(0, 'rgba(253,93,147,0)'); //blue colors
+
+
 var myChart2 = new Chart(ctx2, {
     type: 'bar',
     data: {
-        labels: ['Saludo', 'Producto', 'Venta', 'Validacion', 'Cierre', 'Despedida'],
+        labels: ['Saludo', 'Producto', 'Venta', 'Validación', 'Cierre', 'Despedida'],
         datasets: [{
             label: 'No Permitida',
+            fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#ff5991',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
             data: [{{noPermitida}}],
             //data: [{{infaltables}}],
-            backgroundColor: [
+           /* backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -181,27 +252,11 @@ var myChart2 = new Chart(ctx2, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#FFFFFF'
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-            
-        }
-    }
+   options:gradientBarChartConfigurationWithGrid
 });
 </script>
 
@@ -210,16 +265,28 @@ var myChart2 = new Chart(ctx2, {
 <!--Grafica recomendacion 2.3-->
 <script>
     
-var ctx3 = document.getElementById('recomendacion');
+var ctx3 = document.getElementById('recomendacion').getContext("2d");
+var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, '#2380f7');
+    //gradientStroke.addColorStop(0.8, 'rgba(72,72,176,0.2)');
+    gradientStroke.addColorStop(0, 'rgba(0,84,119,0)'); //purple colors
 var myChart3 = new Chart(ctx3, {
     type: 'bar',
     data: {
-        labels: ['Saludo', 'Producto', 'Venta', 'Validacion', 'Cierre', 'Despedida'],
+        labels: ['Saludo', 'Producto', 'Venta', 'Validación', 'Cierre', 'Despedida'],
         datasets: [{
-            label: 'Recomendacion',
+            label: 'Recomendación',
+            fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#2380f7',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
             data: [{{recomendacion}}],
             //data: [{{infaltables}}],
-            backgroundColor: [
+            /*backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -234,26 +301,11 @@ var myChart3 = new Chart(ctx3, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#FFFFFF'
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-        }
-    }
+    options:gradientBarChartConfigurationWithGrid
 });
 </script>
 
@@ -262,16 +314,22 @@ var myChart3 = new Chart(ctx3, {
 <!--Grafica saludo 3.1-->
 <script>
     
-var ctx4 = document.getElementById('saludo');
+var ctx4 = document.getElementById('saludo').getContext("2d");
 var myChart4 = new Chart(ctx4, {
     type: 'bar',
     data: {
-        labels: ['Infaltable', 'No permitido', 'Recomendacion'],
+        labels: ['Infaltable', 'No permitido', 'Recomendación'],
         datasets: [{
             label: 'Saludo',
+             backgroundColor: [
+                '#ba54f5',
+                'rgba(253,93,147,0.8)',
+                '#2380f7'
+                
+            ],
             data: [{{saludo}}],
             //data: [{{infaltables}}],  
-            backgroundColor: [
+           /* backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -286,26 +344,11 @@ var myChart4 = new Chart(ctx4, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#FFFFFF'
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-        }
-    }
+    options:gradientBarChartConfigurationWithGrid
 });
 </script>
 
@@ -314,16 +357,22 @@ var myChart4 = new Chart(ctx4, {
 <!--Grafica producto 3.2-->
 <script>
     
-var ctx5 = document.getElementById('producto');
+var ctx5 = document.getElementById('producto').getContext("2d");
 var myChart5 = new Chart(ctx5, {
     type: 'bar',
     data: {
-        labels: ['Infaltable', 'No permitido', 'Recomendacion'],
+        labels: ['Infaltable', 'No permitido', 'Recomendación'],
         datasets: [{
             label: 'Producto',
+             backgroundColor: [
+                '#ba54f5',
+                'rgba(253,93,147,0.8)',
+                '#2380f7'
+                
+            ],
             data: [{{producto}}],
             //data: [{{infaltables}}],  
-            backgroundColor: [
+            /*backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -338,26 +387,11 @@ var myChart5 = new Chart(ctx5, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#FFFFFF'
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-        }
-    }
+    options:gradientBarChartConfigurationWithGrid
 });
 </script>
 
@@ -366,16 +400,22 @@ var myChart5 = new Chart(ctx5, {
 <!--Grafica venta 3.3-->
 <script>
     
-var ctx6 = document.getElementById('venta');
+var ctx6 = document.getElementById('venta').getContext("2d");
 var myChart6 = new Chart(ctx6, {
     type: 'bar',
     data: {
-        labels: ['Infaltable', 'No permitido', 'Recomendacion'],
+        labels: ['Infaltable', 'No permitido', 'Recomendación'],
         datasets: [{
             label: 'Venta',
+             backgroundColor: [
+                '#ba54f5',
+                'rgba(253,93,147,0.8)',
+                '#2380f7'
+                
+            ],
             data: [{{venta}}],
             //data: [{{infaltables}}],  
-            backgroundColor: [
+            /*backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -390,26 +430,11 @@ var myChart6 = new Chart(ctx6, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#FFFFFF'
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-        }
-    }
+    options:gradientBarChartConfigurationWithGrid
 });
 </script>
 
@@ -418,16 +443,22 @@ var myChart6 = new Chart(ctx6, {
 <!--Grafica Validacion 3.4-->
 <script>
     
-var ctx7 = document.getElementById('validacion');
+var ctx7 = document.getElementById('validacion').getContext("2d");
 var myChart7 = new Chart(ctx7, {
     type: 'bar',
     data: {
-        labels: ['Infaltable', 'No permitido', 'Recomendacion'],
+        labels: ['Infaltable', 'No permitido', 'Recomendación'],
         datasets: [{
-            label: 'Validacion',
+            label: 'Validación',
+             backgroundColor: [
+                '#ba54f5',
+                'rgba(253,93,147,0.8)',
+                '#2380f7'
+                
+            ],
             data: [{{validacion}}],
             //data: [{{infaltables}}],  
-            backgroundColor: [
+            /*backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -442,26 +473,11 @@ var myChart7 = new Chart(ctx7, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#FFFFFF'
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-        }
-    }
+    options:gradientBarChartConfigurationWithGrid
 });
 </script>
 
@@ -470,16 +486,22 @@ var myChart7 = new Chart(ctx7, {
 <!--Grafica Cierre 3.5-->
 <script>
     
-var ctx8 = document.getElementById('cierre');
+var ctx8 = document.getElementById('cierre').getContext("2d");
 var myChart8 = new Chart(ctx8, {
     type: 'bar',
     data: {
-        labels: ['Infaltable', 'No permitido', 'Recomendacion'],
+        labels: ['Infaltable', 'No permitido', 'Recomendación'],
         datasets: [{
             label: 'Cierre',
+             backgroundColor: [
+                '#ba54f5',
+                'rgba(253,93,147,0.8)',
+                '#2380f7'
+                
+            ],
             data: [{{cierre}}],
             //data: [{{infaltables}}],  
-            backgroundColor: [
+            /*backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -494,26 +516,11 @@ var myChart8 = new Chart(ctx8, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#FFFFFF'
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-        }
-    }
+    options:gradientBarChartConfigurationWithGrid
 });
 </script>
 
@@ -522,16 +529,22 @@ var myChart8 = new Chart(ctx8, {
 <!--Grafica Despedida 3.6-->
 <script>
     
-var ctx9 = document.getElementById('despedida');
+var ctx9 = document.getElementById('despedida').getContext("2d");
 var myChart9 = new Chart(ctx9, {
     type: 'bar',
     data: {
-        labels: ['Infaltable', 'No permitido', 'Recomendacion'],
+        labels: ['Infaltable', 'No permitido', 'Recomendación'],
         datasets: [{
             label: 'Despedida',
+             backgroundColor: [
+                '#ba54f5',
+                'rgba(253,93,147,0.8)',
+                '#2380f7'
+                
+            ],
             data: [{{despedida}}],
             //data: [{{infaltables}}],  
-            backgroundColor: [
+            /*backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -546,26 +559,11 @@ var myChart9 = new Chart(ctx9, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ],*/
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#FFFFFF'
-                }
-            }]
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontColor: '#FFFFFF'
-            }
-        }
-    }
+    options:gradientBarChartConfigurationWithGrid
 });
 </script>
 
