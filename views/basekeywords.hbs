@@ -1,0 +1,70 @@
+{{> head }}
+
+   
+       
+
+      
+    <div class="navbar-minimize-fixed" >
+      <button class="minimize-sidebar btn btn-link btn-primary btn-just-icon">
+        <i class="tim-icons icon-align-center visible-on-sidebar-regular text-muted"></i>
+        <i class="tim-icons icon-bullet-list-67 visible-on-sidebar-mini text-muted"></i>
+      </button>
+    </div>
+    {{> sidebar}}
+     {{> navbar}}
+
+     <div class="content" style="background-color:#F5F6FA;"  >
+
+         <div class="container">
+    <div class="row mt-5">
+        <div class="col-md-7">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Base Keyword</th>
+                        <th>Accion</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    
+
+                       <% if (data) { %>
+                        <% for(var i = 0; i < data.length; i++) { %>
+                          <tr>
+                            <td><%= (i + 1) %></td>
+                            <td><%= data[i].nombre %></td>
+                            <td>
+                                <a href="/update/<%= data[i].id %>" class="btn btn-info">Edit</a>
+                                <a href="/delete/<%= data[i].id %>" class="btn btn-danger">Delete</a>
+                              </td>
+                            
+                          </tr>
+                        <% } %>
+                      <% } %> 
+                    
+                      
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/add" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="nombre" placeholder="ingrese keyword" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Agregar baseKeyword</button>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+     </div>
+
+     {{> footer}}

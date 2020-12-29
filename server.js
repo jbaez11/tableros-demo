@@ -1,9 +1,11 @@
+const { json } = require('express');
 const express = require('express')
 const app = express()
 const hbs = require('hbs');
 const mysql = require ('mysql');
 
 const conexion = mysql.createConnection({
+  multipleStatements: true,
   host: '158.177.191.183',
   user:'aplicacion',
   password: 'IQxf0IvYC8y2',
@@ -17,6 +19,7 @@ conexion.connect(function(err){
     console.log('conexion exitosa a  bd mysql');
   }
 });
+
 
 //Add zeros to time formats
 function addZero(x, n) {
@@ -44,375 +47,291 @@ function getDateTime() {
   return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
 }
 console.log(`fechga ${getDateTime()}`);
-const datetime1 = '2020-12-01 00:00';
+const datetime1 = '2020-12-26 00:00';
 const datetime2 = getDateTime();
-const grupos = new Object();
-const modulos = new Object();
-const infaltable = new Object();
-const noPermitida = new Object();
-const recomendacion = new Object();
-const saludo = new Object();
-const producto = new Object();
-const venta = new Object();
-const validacion = new Object();
-const cierre = new Object();
-const despedida = new Object();
 
-//grupos queries
-//infaltable
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
+//
+//variables para clasificacion keywords
+var sumClasificacion ;
+var sumClasificacion1 ;
+
+//variables para clasificacion basekeywords
+var sumClasificacionComp ;
+var sumClasificacionComp1 ;
+//variables para moduloskeywords
+var sumModulos ;
+var sumModulos1 ;
+//variables para modulo clasificacion infaltable
+var mayorInfaltable;
+var mayorNoPermitida;
+var mayorRecomendacion;
+
+//var querys
+
+var basekeywordsQuery = "SELECT * FROM basekeywords;";
+var grabacionesDEQuery =" SELECT * FROM grabacionesdetailend WHERE grabacionesdetailend.loadAt >= '2020-12-26 00:00';";
+var bgQuery= basekeywordsQuery+grabacionesDEQuery;
+console.log("query",bgQuery)
+
+//var radar
+var basekeywordsArray;
+var grabacionesDEArray;
+//const llaves = new Object();
+
+var clasificacionDict = {};
+var clasificacionDict2 = {}; 
+var clasificacionDictModulos = {};
+var clasificacionDictModulos2 = {};
+var clasModulDict = {};
+var clasificacionRadar={};
+var clasPorcRadar={};
+
+//query clasificacion
+
+conexion.query(`SELECT * FROM grabacionesdetailend WHERE grabacionesdetailend.loadAt >= '${datetime1}';`, function(err,results,fields){
   if (err) throw err;
-  console.log(results[0].cnt);
-  grupos.infaltable = results[0].cnt;
+ 
+ // var clasificacionDict = {}
+ //console.log("resu",results.length)
+ 
+  //grabacionesDEArray=results;
+  //console.log("grab",grabacionesDEArray.length)
+  for(var i=0; i< results.length; i++){
+      //console.log(results[i].permitida);
+    let permitidaVal =  results[i].permitida;
+    if(!(permitidaVal in clasificacionDict)){
+      clasificacionDict[permitidaVal] = 1;
+       
+    } else{
+      clasificacionDict[permitidaVal] += 1;
+    }
+    
+  }
+  //valor que se muestra en la primera grafica de clasificacion "de Infaltable"
+  
+   sumClasificacion1 = Object.values(clasificacionDict);
+   sumClasificacion = 0;
 
-})
-//no permitida
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
+  sumClasificacion1.forEach (function(sum){
+    sumClasificacion += sum
+  })
+  //modulos
+  for(var i=0; i< results.length; i++){
+  //console.log(results[i].clasificacion);
+  let permitidaVal1 =  results[i].clasificacion;
+  if(!(permitidaVal1 in clasificacionDictModulos)){
+    clasificacionDictModulos[permitidaVal1] = 1;
+     
+  } else{
+    clasificacionDictModulos[permitidaVal1] += 1;
+  }
+  
+  }
+
+  
+  sumModulos1 = Object.values(clasificacionDictModulos);
+  sumModulos = 0;
+
+  sumModulos1.forEach (function(sum){
+    sumModulos += sum
+  })
+
+ 
+});
+
+
+//basekeywords
+
+
+
+
+
+
+conexion.query(`SELECT * FROM basekeywords;`, function(err,results,fields){
   if (err) throw err;
-  console.log(results[0].cnt);
-  grupos.noPermitida = results[0].cnt;
+ 
+ // var clasificacionDict = {}
+  for(var i=0; i< results.length; i++){
+    //  console.log(results[i].permitida);
+    let permitidaVal =  results[i].permitida;
+    if(!(permitidaVal in clasificacionDict2)){
+      clasificacionDict2[permitidaVal] = 1;
+       
+    } else{
+      clasificacionDict2[permitidaVal] += 1;
+    }
+    
+  }
 
-})
-//recomendacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
+  sumClasificacionComp1 = Object.values(clasificacionDict2);
+  sumClasificacionComp = 0;
+
+  sumClasificacionComp1.forEach (function(sum){
+    sumClasificacionComp += sum
+  })
+  //modulos comparacion
+  for(var i=0; i< results.length; i++){
+    //  console.log(results[i].permitida);
+    let permitidaVal =  results[i].clasificacion;
+    if(!(permitidaVal in clasificacionDictModulos2)){
+      clasificacionDictModulos2[permitidaVal] = 1;
+       
+    } else{
+      clasificacionDictModulos2[permitidaVal] += 1;
+    }
+    
+  }
+  
+
+  sumModulosComp1 = Object.values(clasificacionDictModulos2);
+  sumModulosComp = 0;
+
+  sumModulosComp1.forEach (function(sum){
+    sumModulosComp += sum
+  })
+
+  
+  
+});
+
+
+//end Basekeywords
+
+// grafica radar
+
+conexion.query(bgQuery, function(err,results){
+ 
+  if(err) throw err;
+  if(!err){
+    basekeywordsArray=results[0];
+    grabacionesDEArray= results[1];
+
+    //console.log("result 0",basekeywordsArray.length);
+    //console.log("Graba", grabacionesDEArray.length)
+
+    for (var i=0; i<basekeywordsArray.length; i++) {
+      basekeywordsArray[i]['count'] = 0;
+    }
+    // populate
+    for (var i=0; i<basekeywordsArray.length; i++) {
+      //console.log(basekeywordsArray[i]);
+      for (var j=0; j<grabacionesDEArray.length; j++) {
+        //console.log(grabacionesDEArray[j])
+        if (basekeywordsArray[i].keyword === grabacionesDEArray[j].key) {
+          //console.log("comp")
+          basekeywordsArray[i]['count'] = 1;
+          break;
+        }
+      }
+    }
+  }
+  //diccionario
+
+  for(var i=0; i< basekeywordsArray.length; i++){
+
+    let permitidaVal =  basekeywordsArray[i].permitida;//infaltable,no permitida, recomendacion 
+    let clasificationVal = basekeywordsArray[i].clasificacion;//venta,saludo,cierre,producto....
+    if(!(permitidaVal in clasificacionRadar)){
+      clasificacionRadar[permitidaVal]={};
+    }
+
+    if(!(clasificationVal in clasificacionRadar[permitidaVal])){
+      (clasificacionRadar[permitidaVal])[clasificationVal]={};
+      ((clasificacionRadar[permitidaVal])[clasificationVal])['possible']=1;
+      ((clasificacionRadar[permitidaVal])[clasificationVal])['found']=0;
+      
+    } 
+    else{
+      ((clasificacionRadar[permitidaVal])[clasificationVal])['possible']+=1;
+      
+    }
+
+  }
+
+  for(var i=0; i< basekeywordsArray.length; i++){
+
+    let permitidaVal =  basekeywordsArray[i].permitida;//infaltable,no permitida, recomendacion 
+    let clasificationVal = basekeywordsArray[i].clasificacion;//venta,saludo,cierre,producto....
+    let countVal = basekeywordsArray[i].count;
+    
+    ((clasificacionRadar[permitidaVal])[clasificationVal])['found']+=countVal;
+  }
+  
+  for(var key in clasificacionRadar){//key = permitidaVal
+    let dictTemp = clasificacionRadar[key];//key2 ClasificationVal
+    for( var key2 in dictTemp){
+      let dictTemp2 = dictTemp[key2];
+      //console.log(dictTemp2);
+      let porcentaje = dictTemp2['found']*100/dictTemp2['possible'];
+      //console.log(porcentaje);
+      ((clasificacionRadar[key])[key2])['porcentaje']=porcentaje;
+
+    }
+  }
+  //extraer listas de porcentaje
+  //clasPorcRadar
+  for(var key in clasificacionRadar){//key = permitidaVal
+    let dictTemp = clasificacionRadar[key];//key2 ClasificationVal
+    let lista = [];
+    for( var key2 in dictTemp){
+      let dictTemp2 = dictTemp[key2];
+      //console.log(dictTemp2);
+      let porcentaje = dictTemp2['porcentaje'];
+      lista.push(porcentaje);
+      //console.log(porcentaje);
+      clasPorcRadar[key]=lista;
+
+    }
+  }
+
+  console.log("prueba enviar",clasPorcRadar['Infaltable']);
+
+
+  //end diccionario
+  
+  console.log("clas Radar",clasPorcRadar)
+  //console.log(basekeywordsArray);
+});
+
+//modulos por clasificacion
+
+conexion.query(`SELECT * FROM grabacionesdetailend WHERE permitida IS NOT NULL AND clasificacion IS NOT NULL AND grabacionesdetailend.loadAt >= '${datetime1}';`, function(err,results,fields){
   if (err) throw err;
-  console.log(results[0].cnt);
-  grupos.recomendacion = results[0].cnt;
+ 
+  for(var i=0; i< results.length; i++){
 
-})
-//END grupos queries
+    let permitidaVal =  results[i].permitida;//infaltable,no permitida, recomendacion 
+    let clasificationVal = results[i].clasificacion;//venta,saludo,cierre,producto....
+    if(!(permitidaVal in clasModulDict)){
+      clasModulDict[permitidaVal]={};
+    }
 
+    if(!(clasificationVal in clasModulDict[permitidaVal])){
+      (clasModulDict[permitidaVal])[clasificationVal]=1;
+      
+    } else{
+      (clasModulDict[permitidaVal])[clasificationVal]+=1;
+      
+    }
 
-//Modulos queries
-//saludo
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.clasificacion = 'saludo' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  modulos.saludo = results[0].cnt;
+  }
+  //infaltable
+  mayorInfaltable = Object.values(clasModulDict["Infaltable"]) ;
+  mayorInfaltable.sort((a, b) => b - a); // For descending sort
+  
+  //no permitida
+  mayorNoPermitida = Object.values(clasModulDict["No permitida"]) ;
+  mayorNoPermitida.sort((a, b) => b - a);
+  
+  //recomendacion
+  mayorRecomendacion = Object.values(clasModulDict["Recomendación"]) ;
+  mayorRecomendacion.sort((a, b) => b - a);
+  //console.log(clasModulDict)
+  
+  
+});
 
-})
-//producto
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.clasificacion = 'producto' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  modulos.producto = results[0].cnt;
-
-})
-//venta
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.clasificacion = 'venta' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  modulos.venta = results[0].cnt;
-
-})
-//validacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.clasificacion = 'validación' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  modulos.validacion = results[0].cnt;
-
-})
-//cierre
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.clasificacion = 'cierre' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  modulos.cierre = results[0].cnt;
-
-})
-//despedida
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.clasificacion = 'despedida' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  modulos.despedida = results[0].cnt;
-
-})
-//END modulos queries
-
-//Infaltable queries
-//saludo
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'saludo' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  infaltable.saludo = results[0].cnt;
-
-})
-//producto
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'producto' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  infaltable.producto = results[0].cnt;
-
-})
-//venta
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'venta' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  infaltable.venta = results[0].cnt;
-
-})
-//validacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'validación' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  infaltable.validacion = results[0].cnt;
-
-})
-//cierre
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'cierre' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  infaltable.cierre = results[0].cnt;
-
-})
-//despedida
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'despedida' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  infaltable.despedida = results[0].cnt;
-
-})
-//END infaltable queries
-
-
-//noPermitida queries
-//saludo
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'saludo' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  noPermitida.saludo = results[0].cnt;
-
-})
-//producto
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'producto' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  noPermitida.producto = results[0].cnt;
-
-})
-//venta
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'venta' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  noPermitida.venta = results[0].cnt;
-
-})
-//validacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'validación' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  noPermitida.validacion = results[0].cnt;
-
-})
-//cierre
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'cierre' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  noPermitida.cierre = results[0].cnt;
-
-})
-//despedida
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'despedida' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  noPermitida.despedida = results[0].cnt;
-
-})
-//END noPermitida queries
-
-
-//recomendacion queries
-//saludo
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'saludo' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  recomendacion.saludo = results[0].cnt;
-
-})
-//producto
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'producto' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  recomendacion.producto = results[0].cnt;
-
-})
-//venta
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'venta' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  recomendacion.venta = results[0].cnt;
-
-})
-//validacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'validación' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  recomendacion.validacion = results[0].cnt;
-
-})
-//cierre
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'cierre' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  recomendacion.cierre = results[0].cnt;
-
-})
-//despedida
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'despedida' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  recomendacion.despedida = results[0].cnt;
-
-})
-//END recomendacion queries
-
-
-
-//saludo queries
-//infaltable
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'saludo' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  saludo.infaltable = results[0].cnt;
-
-})
-//noPermitido
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'saludo' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  saludo.noPermitida = results[0].cnt;
-
-})
-//Recomendacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'saludo' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  saludo.recomendacion= results[0].cnt;
-
-})
-//END saludo 3.1
-
-
-//producto queries 3.2
-//infaltable
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'producto' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  producto.infaltable = results[0].cnt;
-
-})
-//noPermitido
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'producto' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  producto.noPermitida = results[0].cnt;
-
-})
-//Recomendacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'producto' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  producto.recomendacion= results[0].cnt;
-
-})
-//END producto 3.2
-
-
-//venta queries 3.3
-//infaltable
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'venta' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  venta.infaltable = results[0].cnt;
-
-})
-//noPermitido
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'venta' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  venta.noPermitida = results[0].cnt;
-
-})
-//Recomendacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'venta' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  venta.recomendacion= results[0].cnt;
-
-})
-//END venta 3.3
-
-
-//validacion queries 3.4
-//infaltable
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'validación' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  validacion.infaltable = results[0].cnt;
-
-})
-//noPermitido
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'validación' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  validacion.noPermitida = results[0].cnt;
-
-})
-//Recomendacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'validación' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  validacion.recomendacion= results[0].cnt;
-
-})
-//END validacion 3.4
-
-//cierre queries 3.5
-//infaltable
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'cierre' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  cierre.infaltable = results[0].cnt;
-
-})
-//noPermitido
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'cierre' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  cierre.noPermitida = results[0].cnt;
-
-})
-//Recomendacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'cierre' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  cierre.recomendacion= results[0].cnt;
-
-})
-//END cierre 3.5
-
-//despedida queries 3.6
-//infaltable
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Infaltable' AND grabacionesdetailend.clasificacion = 'despedida' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  despedida.infaltable = results[0].cnt;
-
-})
-//noPermitido
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'No permitida' AND grabacionesdetailend.clasificacion = 'despedida' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  despedida.noPermitida = results[0].cnt;
-
-})
-//Recomendacion
-conexion.query(`SELECT count(*) as cnt FROM grabacionesdetailend WHERE grabacionesdetailend.permitida = 'Recomendación' AND grabacionesdetailend.clasificacion = 'despedida' AND grabacionesdetailend.loadAt >= '${datetime1}' AND grabacionesdetailend.loadAt <= '${datetime2}' ORDER BY loadAt DESC;`, function(err,results,fields){
-  if (err) throw err;
-  console.log(results[0].cnt);
-  despedida.recomendacion= results[0].cnt;
-
-})
-//END despedida 3.6
+//end modulos por clasificacion
 
 
 conexion.end();
@@ -428,13 +347,38 @@ require('./hbs/helpers');
 app.get('/', function (req, res) {
   //res.send('Hello World')
   
-
+  
     
-    
-   
+  
+  
   res.render('home',{
       
-      sumGrupos:[grupos.infaltable+grupos.noPermitida+grupos.recomendacion],
+      
+      //clasificacion keywords
+      sumClasificacion:sumClasificacion,
+      sumClasifiacionInfaltable:sumClasificacion1[0],
+      clasificationValues: Object.keys(clasificacionDict).map(function (key) { return clasificacionDict[key]; }),
+      //comparacion de clasificacion
+      sumClasificacionComp:sumClasificacionComp,
+      sumClasificacionCompInfaltable:sumClasificacionComp1[0],
+      clasificationCompValues: Object.keys(clasificacionDict2).map(function (key) { return clasificacionDict2[key]; }),
+      //modulos keywords
+      sumModulos:sumModulos,
+      sumModulosMayor:sumModulos1[4],
+      modulosValues: Object.keys(clasificacionDictModulos).map(function (key) { return clasificacionDictModulos[key]; }),
+      //modulos Comparacion
+      sumModulosComp:sumModulosComp,
+      sumModulosMayorComp:sumModulosComp1[2],
+      modulosValuesComp: Object.keys(clasificacionDictModulos2).map(function (key) { return clasificacionDictModulos2[key]; }),
+      //Modulos por clasificacion
+      infaltableModClas:mayorInfaltable,
+      noPermitidaModClas:mayorNoPermitida,
+      recomendacionModClas:mayorRecomendacion,
+      //radar
+      infaltableRadar: clasPorcRadar['Infaltable'],
+      noPermitidaRadar:clasPorcRadar['No permitida'],
+      recomendacionRadar:clasPorcRadar['Recomendación'],
+      /*sumGrupos:[grupos.infaltable+grupos.noPermitida+grupos.recomendacion],
       gruposInfaltable:[grupos.infaltable],
       modulosCierre:[modulos.cierre],
       grupos:[grupos.infaltable,grupos.noPermitida,grupos.recomendacion],
@@ -447,17 +391,24 @@ app.get('/', function (req, res) {
       venta : [venta.infaltable,venta.noPermitida,venta.recomendacion],
       validacion : [validacion.infaltable,validacion.noPermitida,validacion.recomendacion],
       cierre : [cierre.infaltable,cierre.noPermitida,cierre.recomendacion],
-      despedida : [despedida.infaltable,despedida.noPermitida,despedida.recomendacion],
+      despedida : [despedida.infaltable,despedida.noPermitida,despedida.recomendacion],*/
 
   });
   
 })
 
-app.get('/about', function (req, res) {
-    //res.send('Hello World')
+app.get('/basekeywords', function (req, res) {
     
-    res.render('about',{
+    res.render('basekeywords',{
         
+       
+    });
+  })
+
+  app.get('/todo', function (req, res) {
+    
+    res.render('todo',{
+        todo:[todo]
        
     });
   })
@@ -465,3 +416,4 @@ app.get('/about', function (req, res) {
 app.listen(port, ()=>{
     console.log(`escuchando por el puerto ${port}`);
 })
+

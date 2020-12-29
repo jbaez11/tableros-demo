@@ -1,13 +1,13 @@
 <!--Grafica Grupos 1.1-->
 
 <script>
-     
+    
+    
+    
     new Chart(document.getElementById("doughnut-chart1"), {
     type: 'doughnut',
     data: {
-      labels: ["Infaltable", "No Permitida", "Recomendacion"],
-     
-      
+    labels: ["Infaltable", "Recomendacion", "No permitida"],
       datasets: [
         {
           label: "Grupos",
@@ -15,9 +15,9 @@
           pointHoverRadius: 0,
           
           backgroundColor: [
-                '#ba54f5',
-                'rgba(253,93,147,0.8)',
-                '#2380f7'
+                '#FF9B00',
+                '#5E5E5E',
+                '#929292'
                 
             ],
             /*borderColor: [
@@ -27,9 +27,67 @@
                
             ],*/
             borderWidth: 1,
-          data: [{{grupos}}],
+          data: [{{clasificationValues}}],
+          
         }
       ]
+      
+    },
+    options: {
+        cutoutPercentage: 60,
+      title: {
+        display: false,
+        text: 'Grupos',
+        fontColor: 'black'
+        
+      },
+      legend: {
+            display: false,
+            labels: {
+                fontColor: '#333'
+            }
+        }
+    }
+});
+</script>
+<!--END Grafica Grupos 1.1 -->
+
+
+
+<!--Grafica Grupos 1.1 Comparacion-->
+
+<script>
+    
+    
+    
+    new Chart(document.getElementById("doughnut-chart2"), {
+    type: 'doughnut',
+    data: {
+    labels: ["Infaltable", "No permitida", "Recomendacion"],
+      datasets: [
+        {
+          label: "Grupos",
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          
+          backgroundColor: [
+                '#FF9B00',
+                '#929292',
+                '#5E5E5E'
+                
+            ],
+            /*borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+               
+            ],*/
+            borderWidth: 1,
+          data: [{{clasificationCompValues}}],
+          
+        }
+      ]
+      
     },
     options: {
         cutoutPercentage: 60,
@@ -50,7 +108,7 @@
 </script>
 
 
-<!--END Grafica Grupos 1.1-->
+<!--END Grafica Grupos 1.1 Comparacion-->
 
 <!--Grafica Modulos 1.2-->
 <script>
@@ -58,7 +116,7 @@
     new Chart(document.getElementById("doughnut-chart"), {
     type: 'doughnut',
     data: {
-      labels: ["Saludo", "Producto", "Venta", "Validación", "Cierre", "Despedida"],
+      labels: ["Cierre", "Producto", "Saludo", "Validación", "Venta", "Despedida"],
       datasets: [
         {
           label: "Modulos",
@@ -66,10 +124,14 @@
           pointHoverRadius: 0,
           
           backgroundColor: [
-                '#E41A1C',
-                '#377EB8',
-                '#4DAF4A',
-          "#984EA3", "#FF7F00","#FFFF33"],
+                '#FFB440',
+                '#FF9B00',
+                
+                '#CC7C00',
+                "#5E5E5E", 
+                "#929292",
+                "#D6D5D5"
+                ],
           /*backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -87,7 +149,7 @@
                 'rgba(255, 159, 64, 1)'
             ],*/
             borderWidth: 1,
-          data: [{{modulos}}]
+          data: [{{modulosValues}}]
         }
       ]
     },
@@ -110,7 +172,66 @@
 <!--END Grafica Modulos 1.2-->
 
 
+<!--Grafica Modulos 1.2 Comparacion-->
+<script>
+    
+    new Chart(document.getElementById("doughnut-chart3"), {
+    type: 'doughnut',
+    data: {
+      labels: ["Cierre","Despedida"  , "Producto", "Saludo","Validación", "Venta"],
+      datasets: [
+        {
+          label: "Modulos",
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          
+          backgroundColor: [
+                '#FFB440',
+                '#FF9B00',
+                
+                '#CC7C00',
+                "#5E5E5E", 
+                "#929292",
+                "#D6D5D5"
+                ],
+          /*backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],*/
+            borderWidth: 1,
+          data: [{{modulosValuesComp}}]
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: false,
+        text: 'Modulos',
+        fontColor: 'black'
+      },
+      legend: {
+            display: false,
+            labels: {
+                fontColor: 'black'
+            }
+        }
+    }
+});
+</script>
 
+<!--END Grafica Modulos 1.2 Comparacion-->
 
 <!--Grafica Infaltable 2.1-->
 <script>
@@ -157,31 +278,31 @@
     
 var ctx = document.getElementById('graficaInfaltable').getContext("2d");
 var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, '#ba54f5');
+    
+    gradientStroke.addColorStop(1, '#F3A505');
     //gradientStroke.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-    gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
+    gradientStroke.addColorStop(0, '#FF9B00'); //purple colors
 
 
 
 var myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'horizontalBar',
     responsive: true,
     data: {
-        labels: ['Saludo', 'Producto', 'Venta', 'Validación', 'Cierre', 'Despedida'],
+        labels: ['Cierre', 'Venta','Producto', 'Validacion', 'Despedida'],//
         datasets: [{
             label: "Infaltable",
             fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
-          borderColor: '#ba54f5',
+          borderColor: '#FF9B00',
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
           
             
             //data: [12, 19, 3, 5, 2, 3],
-            data: [{{infaltable}}],
+            data: [{{infaltableModClas}}],
             /*backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -218,24 +339,24 @@ var ctx2 = document.getElementById('noPermitida').getContext("2d");
 
 var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
 
-    gradientStroke.addColorStop(1, 'rgba(253,93,147,0.8)');
-    gradientStroke.addColorStop(0, 'rgba(253,93,147,0)'); //blue colors
+    gradientStroke.addColorStop(1, '#F3A505');
+    gradientStroke.addColorStop(0, '#FF9B00'); //blue colors
 
 
 var myChart2 = new Chart(ctx2, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: {
-        labels: ['Saludo', 'Producto', 'Venta', 'Validación', 'Cierre', 'Despedida'],
+        labels: ['Venta', 'Producto', 'Saludo', 'Validación'],
         datasets: [{
             label: 'No Permitida',
             fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
-          borderColor: '#ff5991',
+          borderColor: '#FF9B00',
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
-            data: [{{noPermitida}}],
+            data: [{{noPermitidaModClas}}],
             //data: [{{infaltables}}],
            /* backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -268,23 +389,23 @@ var myChart2 = new Chart(ctx2, {
 var ctx3 = document.getElementById('recomendacion').getContext("2d");
 var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
 
-    gradientStroke.addColorStop(1, '#2380f7');
+    gradientStroke.addColorStop(1, '#F3A505');
     //gradientStroke.addColorStop(0.8, 'rgba(72,72,176,0.2)');
-    gradientStroke.addColorStop(0, 'rgba(0,84,119,0)'); //purple colors
+    gradientStroke.addColorStop(0, '#FF9B00'); //purple colors
 var myChart3 = new Chart(ctx3, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: {
-        labels: ['Saludo', 'Producto', 'Venta', 'Validación', 'Cierre', 'Despedida'],
+        labels: ['Venta', 'Producto' ],
         datasets: [{
             label: 'Recomendación',
             fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
-          borderColor: '#2380f7',
+          borderColor: '#FF9B00',
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
-            data: [{{recomendacion}}],
+            data: [{{recomendacionModClas}}],
             //data: [{{infaltables}}],
             /*backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -316,18 +437,36 @@ var myChart3 = new Chart(ctx3, {
     
 var ctx4 = document.getElementById('saludo').getContext("2d");
 var myChart4 = new Chart(ctx4, {
-    type: 'bar',
+    type: 'radar',
     data: {
-        labels: ['Infaltable', 'No permitido', 'Recomendación'],
+        labels: ['Saludo', 'Venta', 'Venta', 'Validacion','Cierre','Despedida'],
         datasets: [{
-            label: 'Saludo',
+            label: 'Infaltable',
              backgroundColor: [
-                '#ba54f5',
-                'rgba(253,93,147,0.8)',
-                '#2380f7'
+                'rgba(255,155,0,0.2)'
+                //'rgba(253,93,147,0.8)',
+                //'#2380f7'
                 
             ],
-            data: [{{saludo}}],
+            data: [{{infaltableRadar}}]
+            },{
+            label: 'No Permitida',
+             backgroundColor: [
+                'rgba(94,94,94,0.8)'
+                
+                
+            ],
+            data: [{{noPermitidaRadar}}]
+            },{
+            label: 'Recomendacion',
+             backgroundColor: [
+                
+                'rgba(253,93,147,0.8)'
+                
+                
+            ],
+            data: [{{recomendacionRadar}}],
+            
             //data: [{{infaltables}}],  
            /* backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
@@ -348,7 +487,7 @@ var myChart4 = new Chart(ctx4, {
             borderWidth: 1
         }]
     },
-    options:gradientBarChartConfigurationWithGrid
+    
 });
 </script>
 
