@@ -71,7 +71,7 @@ var mayorRecomendacion;
 var basekeywordsQuery = "SELECT * FROM basekeywords;";
 var grabacionesDEQuery =" SELECT * FROM grabacionesdetailend WHERE grabacionesdetailend.loadAt >= '2020-12-26 00:00';";
 var bgQuery= basekeywordsQuery+grabacionesDEQuery;
-console.log("query",bgQuery)
+//console.log("query",bgQuery)
 
 //var radar
 var basekeywordsArray;
@@ -284,12 +284,12 @@ conexion.query(bgQuery, function(err,results){
     }
   }
 
-  console.log("prueba enviar",clasPorcRadar['Infaltable']);
+  //console.log("prueba enviar",clasPorcRadar['Infaltable']);
 
 
   //end diccionario
   
-  console.log("clas Radar",clasPorcRadar)
+  //console.log("clas Radar",clasPorcRadar)
   //console.log(basekeywordsArray);
 });
 
@@ -378,20 +378,7 @@ app.get('/', function (req, res) {
       infaltableRadar: clasPorcRadar['Infaltable'],
       noPermitidaRadar:clasPorcRadar['No permitida'],
       recomendacionRadar:clasPorcRadar['Recomendación'],
-      /*sumGrupos:[grupos.infaltable+grupos.noPermitida+grupos.recomendacion],
-      gruposInfaltable:[grupos.infaltable],
-      modulosCierre:[modulos.cierre],
-      grupos:[grupos.infaltable,grupos.noPermitida,grupos.recomendacion],
-      modulos: [modulos.saludo,modulos.producto,modulos.venta,modulos.validacion,modulos.cierre,modulos.despedida],
-      infaltable : [infaltable.saludo,infaltable.producto,infaltable.venta,infaltable.validacion,infaltable.cierre,infaltable.despedida],
-      noPermitida : [noPermitida.saludo,noPermitida.producto,noPermitida.venta,noPermitida.validacion,noPermitida.cierre,noPermitida.despedida],
-      recomendacion : [recomendacion.saludo,recomendacion.producto,recomendacion.venta,recomendacion.validacion,recomendacion.cierre,recomendacion.despedida],
-      saludo : [saludo.infaltable,saludo.noPermitida,saludo.recomendacion],
-      producto : [producto.infaltable,producto.noPermitida,producto.recomendacion],
-      venta : [venta.infaltable,venta.noPermitida,venta.recomendacion],
-      validacion : [validacion.infaltable,validacion.noPermitida,validacion.recomendacion],
-      cierre : [cierre.infaltable,cierre.noPermitida,cierre.recomendacion],
-      despedida : [despedida.infaltable,despedida.noPermitida,despedida.recomendacion],*/
+      
 
   });
   
