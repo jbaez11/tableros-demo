@@ -1,16 +1,25 @@
 const { json } = require('express');
-const express = require('express')
-const app = express()
+const express = require('express');
+//const path = require('path');
+//const morgan = require('morgan');
+const app = express();
 const hbs = require('hbs');
 const mysql = require ('mysql');
 
+
+//import rutas
+//const keywordsRoutes = require('./routes/keywords');
+//const { urlencoded } = require('express');
+
 const conexion = mysql.createConnection({
   multipleStatements: true,
-  host: '158.177.191.183',
-  user:'aplicacion',
-  password: 'IQxf0IvYC8y2',
-  database:'isabanorte'
+  host: '',
+  user:'',
+  password: '',
+  database:''
 })
+//app.use(express.urlencoded({extended:false}));
+//app.use(morgan('dev'));
 
 conexion.connect(function(err){
   if(err){
@@ -384,21 +393,15 @@ app.get('/', function (req, res) {
   
 })
 
-app.get('/basekeywords', function (req, res) {
-    
-    res.render('basekeywords',{
-        
-       
-    });
-  })
+//app.use('/basekeywords', keywordsRoutes);
 
-  app.get('/todo', function (req, res) {
-    
-    res.render('todo',{
-        todo:[todo]
-       
-    });
-  })
+app.get('/asesores', function (req, res) {
+  res.render('asesores',{
+  
+  });
+})
+
+
  
 app.listen(port, ()=>{
     console.log(`escuchando por el puerto ${port}`);
